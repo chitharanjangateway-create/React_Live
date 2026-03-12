@@ -5,7 +5,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ResetPassword from "./ResetPassword";
 import AfterLogin from "./AfterLogin";   // Dashboard Page
-
+import AdminApi from "./pages/AdminApi";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,6 +30,9 @@ theme="colored"
 <Route path="/reset" element={<ResetPassword/>}/>
 
 <Route path="/dashboard" element={<AfterLogin/>}/>
+
+
+<Route path="/adminapi" element={<AdminApi/>}/>
 
 </Routes>
 
