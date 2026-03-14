@@ -1,180 +1,92 @@
 import React, { useState } from "react";
 import { auth, database } from "./firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, set } from "firebase/database";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ref, push } from "firebase/database";
 import "./Register.css";
 
-function Register() {
+function Register({ closeModal }) {
 
-const [formData,setFormData] = useState({
+const [form, setForm] = useState({
 firstname:"",
 lastname:"",
-age:"",
-mailid:"",
+email:"",
+password:"",
 phonenumber:"",
-degree:"",
 city:"",
-district:"",
-passedout:"",
-experience:"",
-domain:"",
-password:""
+domain:""
 });
 
-const [showPassword,setShowPassword] = useState(false);
-
-const handleChange=(e)=>{
-setFormData({
-...formData,
+const handleChange = (e)=>{
+setForm({
+...form,
 [e.target.name]:e.target.value
 });
 };
 
-const handleRegister=(e)=>{
+const handleSubmit = async (e)=>{
 e.preventDefault();
 
-// Validation
-if(!formData.firstname || !formData.mailid || !formData.password){
-toast.error("Please fill required fields");
-return;
-}
+try{
 
-createUserWithEmailAndPassword(auth,formData.mailid,formData.password)
-
-.then((userCredential)=>{
+const userCredential = await createUserWithEmailAndPassword(
+auth,
+form.email,
+form.password
+);
 
 const user = userCredential.user;
 
-set(ref(database,"users/"+user.uid),{
-...formData,
-uid:user.uid
+await push(ref(database,"users"),{
+uid:user.uid,
+firstname:form.firstname,
+lastname:form.lastname,
+email:form.email,
+phonenumber:form.phonenumber,
+city:form.city,
+domain:form.domain
 });
 
-toast.success("Registration Successful 🎉");
+alert("User Registered Successfully");
 
-})
-.catch((error)=>{
-toast.error(error.message);
-});
+closeModal();
+
+}catch(error){
+alert(error.message);
+}
+
 };
 
-return(
+return (
 
-<div className="register-container">
+<div className="popup">
 
-<div className="register-card">
+<div className="popup-inner">
 
-<h2 className="title">Create Account</h2>
-<p className="subtitle">Fill the details to register</p>
+<h3>Register User</h3>
 
-<form onSubmit={handleRegister}>
+<form onSubmit={handleSubmit}>
 
-<div className="grid">
+<input name="firstname" placeholder="First Name" onChange={handleChange} required/>
 
-<input
-name="firstname"
-placeholder="First Name"
-onChange={handleChange}
-/>
+<input name="lastname" placeholder="Last Name" onChange={handleChange} required/>
 
-<input
-name="lastname"
-placeholder="Last Name"
-onChange={handleChange}
-/>
+<input name="email" placeholder="Email" onChange={handleChange} required/>
 
-<input
-name="age"
-placeholder="Age"
-onChange={handleChange}
-/>
+<input type="password" name="password" placeholder="Password" onChange={handleChange} required/>
 
-<input
-name="mailid"
-placeholder="Email"
-onChange={handleChange}
-/>
+<input name="phonenumber" placeholder="Phone Number" onChange={handleChange} required/>
 
-<input
-name="phonenumber"
-placeholder="Phone Number"
-onChange={handleChange}
-/>
+<input name="city" placeholder="City" onChange={handleChange} required/>
 
-<input
-name="degree"
-placeholder="Degree"
-onChange={handleChange}
-/>
+<input name="domain" placeholder="Domain" onChange={handleChange} required/>
 
-<input
-name="city"
-placeholder="City"
-onChange={handleChange}
-/>
+<button type="submit">Register</button>
 
-<input
-name="district"
-placeholder="District"
-onChange={handleChange}
-/>
-
-<input
-name="passedout"
-placeholder="Passed Out Year"
-onChange={handleChange}
-/>
-
-<input
-name="experience"
-placeholder="Experience"
-onChange={handleChange}
-/>
-
-<input
-name="domain"
-placeholder="Domain"
-onChange={handleChange}
-/>
-
-<div className="password-box">
-
-<input
-type={showPassword ? "text" : "password"}
-name="password"
-placeholder="Password"
-onChange={handleChange}
-/>
-
-<span
-className="show-btn"
-onClick={()=>setShowPassword(!showPassword)}
->
-{showPassword ? "Hide" : "Show"}
-</span>
-
-</div>
-
-</div>
-
-<button className="register-btn">
-Register
-</button>
+<button type="button" onClick={closeModal}>Close</button>
 
 </form>
 
 </div>
-
-<ToastContainer
-position="top-right"
-autoClose={3000}
-hideProgressBar={false}
-closeOnClick
-pauseOnHover
-theme="colored"
-/>
 
 </div>
 
@@ -182,4 +94,4 @@ theme="colored"
 
 }
 
-export default Register;
+export default Register;    

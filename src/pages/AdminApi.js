@@ -13,11 +13,11 @@ function AdminApi() {
         fetchUsers();
     }, []);
 
-    const fetchUsers = async () => {
+        const fetchUsers = async () => {
 
-        const res = await getUsers();
+            const res = await getUsers();
 
-        if (res.data) {
+            if (res.data) {
 
             const data = Object.keys(res.data).map(key => ({
                 id: key,
@@ -73,8 +73,12 @@ function AdminApi() {
 
             <div className="row">
 
-                {/* FORM SECTION */}
-                <div className="col-md-4">
+
+                
+
+
+
+                {/* <div className="col-md-4">
 
                     <div className="card shadow">
 
@@ -130,11 +134,11 @@ function AdminApi() {
 
                     </div>
 
-                </div>
+                </div> */}
 
 
-                {/* TABLE SECTION */}
-                <div className="col-md-8">
+
+                <div className="col-12">
 
                     <div className="card shadow">
 

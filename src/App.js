@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import ResetPassword from "./ResetPassword";
-import AfterLogin from "./AfterLogin";   // Dashboard Page
+import AfterLogin from "./AfterLogin";  
 import AdminApi from "./pages/AdminApi";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

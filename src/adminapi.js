@@ -11,7 +11,7 @@ export const createUser = (data) =>
 
 /* UPDATE USER */
 export const updateUser = (id, data) =>
-  axios.put(`${BASE_URL}/${id}.json`, data);
+ axios.put(`${BASE_URL}/${id}.json`, data);
 
 /* DELETE USER */
 export const deleteUser = (id) =>

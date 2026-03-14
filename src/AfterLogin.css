@@ -7,13 +7,14 @@ font-family:Arial, Helvetica, sans-serif;
 
 .dashboard-container{
 display:flex;
-height:100vh;
+height:500vh;
 }
 
 /* Sidebar */
 
 .sidebar{
 width:250px;
+
 background:#1e293b;
 color:white;
 padding:20px;
