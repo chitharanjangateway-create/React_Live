@@ -7,6 +7,7 @@ import "./Register.css";
 function Register({ closeModal }) {
 
 const [form, setForm] = useState({
+image:"",
 firstname:"",
 lastname:"",
 email:"",
@@ -80,9 +81,9 @@ return (
 
 <input name="domain" placeholder="Domain" onChange={handleChange} required/>
 
-<button type="submit">Register</button>
+<button type="submit" className="btn btn-warning btn-sm me-2">Register</button>
 
-<button type="button" onClick={closeModal}>Close</button>
+<button type="button" className="btn btn-danger btn-sm" onClick={closeModal}>Close</button>
 
 </form>
 

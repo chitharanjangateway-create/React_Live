@@ -157,7 +157,8 @@ function AdminApi() {
                                     <tr>
 
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Actions</th>
 
@@ -171,7 +172,9 @@ function AdminApi() {
                                         <tr key={user.id}>
 
                                             <td>{user.id}</td>
-                                            <td>{user.name}</td>
+                                            <td>{user.firstname}</td>
+                                            <td>{user.lastname}</td>
+
                                             <td>{user.email}</td>
 
                                             <td>
