@@ -8,354 +8,359 @@ import RegisterModal from "./Register";
 
 function Users() {
 
-const [users, setUsers] = useState([]);
-const [showPopup, setShowPopup] = useState(false);
-const [editId, setEditId] = useState(null);
-const [showModal, setShowModal] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
-const [formData, setFormData] = useState({
-firstname: "",
-lastname: "",
-email: "",
-phonenumber: "",
-city: "",
-domain: ""
-});
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        phonenumber: "",
+        city: "",
+        domain: ""
+    });
 
 
 
-/* FETCH USERS */
+    /* FETCH USERS */
 
-useEffect(() => {
+    useEffect(() => {
 
-const usersRef = ref(database, "users");
+        const usersRef = ref(database, "users");
 
-onValue(usersRef, (snapshot) => {
+        const unsubscribe = onValue(usersRef, (snapshot) => {
 
-const data = snapshot.val();
+            const data = snapshot.val();
 
-if (!data) {
-setUsers([]);
-return;
-}
+            if (!data) {
+                setUsers([]);
+                return;
+            }
 
-let userList = [];
+            let userList = [];
 
-for (let id in data) {
+            for (let id in data) {
 
-userList.push({
-id: id,
-...data[id]
-});
+                userList.push({
+                    id: id,
+                    ...data[id]
+                });
 
-}
+            }
 
-setUsers(userList);
+            setUsers(userList);
 
-});
+        });
 
-}, []);
+        // Cleanup listener on unmount
+        return () => unsubscribe();
 
+    }, []);
 
 
-/* DELETE USER */
 
-const deleteUser = (id) => {
+    /* DELETE USER */
 
-if (window.confirm("Are you sure to delete this user?")) {
+    const deleteUser = (id) => {
 
-remove(ref(database, "users/" + id));
+        if (window.confirm("Are you sure to delete this user?")) {
 
-toast.success("User Deleted Successfully");
+            remove(ref(database, "users/" + id));
 
-}
+            toast.success("User Deleted Successfully");
 
-};
+        }
 
+    };
 
 
-/* OPEN EDIT POPUP */
 
-const openEditPopup = (user) => {
+    /* OPEN EDIT POPUP */
 
-setShowPopup(true);
+    const openEditPopup = (user) => {
 
-setEditId(user.id);
+        setShowPopup(true);
 
-setFormData({
-firstname: user.firstname || "",
-lastname: user.lastname || "",
-email: user.email || "",
-phonenumber: user.phonenumber || "",
-city: user.city || "",
-domain: user.domain || ""
-});
+        setEditId(user.id);
 
-};
+        setFormData({
+            firstname: user.firstname || "",
+            lastname: user.lastname || "",
+            email: user.email || "",
+            phonenumber: user.phonenumber || "",
+            city: user.city || "",
+            domain: user.domain || ""
+        });
 
+    };
 
 
-/* CLOSE EDIT POPUP */
 
-const closePopup = () => {
-setShowPopup(false);
-};
+    /* CLOSE EDIT POPUP */
 
+    const closePopup = () => {
+        setShowPopup(false);
+    };
 
 
-/* HANDLE INPUT CHANGE */
 
-const handleChange = (e) => {
+    /* HANDLE INPUT CHANGE */
 
-setFormData({
-...formData,
-[e.target.name]: e.target.value
-});
+    const handleChange = (e) => {
 
-};
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
 
+    };
 
 
-/* UPDATE USER */
 
-const updateUser = (e) => {
+    /* UPDATE USER */
 
-e.preventDefault();
+    const updateUser = (e) => {
 
-update(ref(database, "users/" + editId), formData)
+        e.preventDefault();
 
-.then(() => {
-toast.success("User Updated Successfully");
-setShowPopup(false);
-})
+        update(ref(database, "users/" + editId), formData)
 
-.catch(() => {
-toast.error("Update Failed");
-});
+            .then(() => {
+                toast.success("User Updated Successfully");
+                setShowPopup(false);
+            })
 
-};
+            .catch(() => {
+                toast.error("Update Failed");
+            });
 
+    };
 
 
-return (
 
-<div className="container mt-4">
+    return (
 
+        <div className="container mt-4">
 
-{/* DASHBOARD CARDS */}
 
-<div className="row mb-4">
+            {/* DASHBOARD CARDS */}
 
-<div className="col-md-4">
-<div className="card shadow text-center p-3">
-<h4>Total Users</h4>
-<h2>{users.length}</h2>
-</div>
-</div>
+            <div className="row mb-4">
 
-<div className="col-md-4">
-<div className="card shadow text-center p-3">
-<h4>Total Employees</h4>
-<h2>45</h2>
-</div>
-</div>
+                <div className="col-md-4">
+                    <div className="card shadow text-center p-3">
+                        <h4>Total Users</h4>
+                        <h2>{users.length}</h2>
+                    </div>
+                </div>
 
-<div className="col-md-4">
-<div className="card shadow text-center p-3">
-<h4>Active Domains</h4>
-<h2>12</h2>
-</div>
-</div>
+                <div className="col-md-4">
+                    <div className="card shadow text-center p-3">
+                        <h4>Total Employees</h4>
+                        <h2>45</h2>
+                    </div>
+                </div>
 
-</div>
+                <div className="col-md-4">
+                    <div className="card shadow text-center p-3">
+                        <h4>Active Domains</h4>
+                        <h2>12</h2>
+                    </div>
+                </div>
 
+            </div>
 
 
-<h1>Api Method</h1>
-<h3 className="mb-4">Users List</h3>
 
+            {/* <h1>Api Method</h1>
+            <h3 className="mb-4">Users List</h3>
 
 
-{/* USERS TABLE */}
 
-<table className="table table-bordered table-striped">
+          
 
-<thead>
+            <table className="table table-bordered table-striped">
 
-<tr>
+                <thead>
 
-<th>SN</th>
-<th>Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>City</th>
-<th>Domain</th>
-<th>Action</th>
+                    <tr>
 
-</tr>
+                        <th>SN</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>City</th>
+                        <th>Domain</th>
+                        <th>Action</th>
 
-</thead>
+                    </tr>
 
-<tbody>
+                </thead>
 
-{users.map((j, index) => (
+                <tbody>
 
-<tr key={j.id}>
+                    {users.map((j, index) => (
 
-<td>{index + 1}</td>
+                        <tr key={j.id}>
 
-<td>{j.firstname} {j.lastname}</td>
+                            <td>{index + 1}</td>
 
-<td>{j.email}</td>
+                            <td>{j.firstname} {j.lastname}</td>
 
-<td>{j.phonenumber}</td>
+                            <td>{j.email}</td>
 
-<td>{j.city}</td>
+                            <td>{j.phonenumber}</td>
 
-<td>{j.domain}</td>
+                            <td>{j.city}</td>
 
-<td>
+                            <td>{j.domain}</td>
 
-<button
-className="btn btn-primary me-2"
-onClick={() => openEditPopup(j)}
->
-Edit
-</button>
+                            <td>
 
-<button
-className="btn btn-danger"
-onClick={() => deleteUser(j.id)}
->
-Delete
-</button>
+                                <button
+                                    className="btn btn-primary me-2"
+                                    onClick={() => openEditPopup(j)}
+                                >
+                                    Edit
+                                </button>
 
-</td>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => deleteUser(j.id)}
+                                >
+                                    Delete
+                                </button>
 
-</tr>
+                            </td>
 
-))}
+                        </tr>
 
-</tbody>
+                    ))}
 
-</table>
+                </tbody>
 
+            </table> */}
 
 
-{/* ADD USER BUTTON */}
 
-<button
-onClick={() => setShowModal(true)}
-className="btn btn-success mb-4"
->
-Add User
-</button>
+           
 
 
 
-{/* REGISTER MODAL */}
+            {/* REGISTER MODAL */}
 
-{showModal && (
-<RegisterModal closeModal={() => setShowModal(false)} />
-)}
+            {showModal && (
+                <RegisterModal closeModal={() => setShowModal(false)} />
+            )}
 
 
 
-{/* EDIT POPUP */}
+            {/* EDIT POPUP */}
 
-{showPopup && (
+            {showPopup && (
 
-<div className="popup-overlay">
+                <div className="popup-overlay">
 
-<div className="popup-card">
+                    <div className="popup-card">
 
-<h4 className="mb-3">Edit User</h4>
+                        <h4 className="mb-3">Edit User</h4>
 
-<form onSubmit={updateUser}>
+                        <form onSubmit={updateUser}>
 
-<input
-type="text"
-name="firstname"
-placeholder="First Name"
-value={formData.firstname}
-onChange={handleChange}
-className="form-control mb-2"
-/>
+                            <input
+                                type="text"
+                                name="firstname"
+                                placeholder="First Name"
+                                value={formData.firstname}
+                                onChange={handleChange}
+                                className="form-control mb-2"
+                            />
 
-<input
-type="text"
-name="lastname"
-placeholder="Last Name"
-value={formData.lastname}
-onChange={handleChange}
-className="form-control mb-2"
-/>
+                            <input
+                                type="text"
+                                name="lastname"
+                                placeholder="Last Name"
+                                value={formData.lastname}
+                                onChange={handleChange}
+                                className="form-control mb-2"
+                            />
 
-<input
-type="email"
-name="email"
-placeholder="Email"
-value={formData.email}
-onChange={handleChange}
-className="form-control mb-2"
-/>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="form-control mb-2"
+                            />
 
-<input
-type="text"
-name="phonenumber"
-placeholder="Phone"
-value={formData.phonenumber}
-onChange={handleChange}
-className="form-control mb-2"
-/>
+                            <input
+                                type="text"
+                                name="phonenumber"
+                                placeholder="Phone"
+                                value={formData.phonenumber}
+                                onChange={handleChange}
+                                className="form-control mb-2"
+                            />
 
-<input
-type="text"
-name="city"
-placeholder="City"
-value={formData.city}
-onChange={handleChange}
-className="form-control mb-2"
-/>
+                            <input
+                                type="text"
+                                name="city"
+                                placeholder="City"
+                                value={formData.city}
+                                onChange={handleChange}
+                                className="form-control mb-2"
+                            />
 
-<input
-type="text"
-name="domain"
-placeholder="Domain"
-value={formData.domain}
-onChange={handleChange}
-className="form-control mb-3"
-/>
+                            <input
+                                type="text"
+                                name="domain"
+                                placeholder="Domain"
+                                value={formData.domain}
+                                onChange={handleChange}
+                                className="form-control mb-3"
+                            />
 
-<button className="btn btn-success me-2">
-Update
-</button>
+                            <button className="btn btn-success me-2">
+                                Update
+                            </button>
 
-<button
-type="button"
-className="btn btn-secondary"
-onClick={closePopup}
->
-Cancel
-</button>
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={closePopup}
+                            >
+                                Cancel
+                            </button>
 
-</form>
+                        </form>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-)}
+            )}
 
 
 
-{/* SECOND DASHBOARD */}
+            {/* SECOND DASHBOARD */}
 
-<AdminApi />
+            <AdminApi />
 
-</div>
+             {/* ADD USER BUTTON */}
 
-);
+            <button
+                onClick={() => setShowModal(true)}
+                className="btn btn-success mb-4"
+            >
+                Add User
+            </button>
+
+        </div>
+
+    );
 
 }
 

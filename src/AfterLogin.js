@@ -14,7 +14,6 @@ function AfterLogin() {
 
             <div className="row vh-100" >
 
-                {/* Sidebar */}
 
                 <div className="col-md-2 bg-dark text-white vh-200 p-3">
 X
@@ -48,8 +47,7 @@ X
                 </div>
 
 
-                {/* Main Content */}
-
+              
                 <div className="col-md-10 p-4">
 
                     {page === "dashboard" && (
@@ -60,7 +58,7 @@ X
 
 
 
-                    {/* ADMIN PAGE */}
+                  
 
                     {page === "admin" && (
 
@@ -68,12 +66,9 @@ X
 
                             <h2 className="mb-4">Admin Panel</h2>
 
-                            {/* CARDS */}
+                           
 
                       
-
-
-                            {/* BUTTONS */}
 
                             <div className="mb-4">
 

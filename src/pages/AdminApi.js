@@ -52,7 +52,7 @@ function AdminApi() {
 
     const handleEdit = (user) => {
 
-        setName(user.name);
+        setName(user.firstname);
         setEmail(user.email);
         setEditId(user.id);
 
@@ -74,70 +74,6 @@ function AdminApi() {
             <div className="row">
 
 
-                
-
-
-
-                {/* <div className="col-md-4">
-
-                    <div className="card shadow">
-
-                        <div className="card-header bg-primary text-white text-center">
-
-                            <h5>{editId ? "Update User" : "Add New User"}</h5>
-
-                        </div>
-
-                        <div className="card-body">
-
-                            <form onSubmit={handleSubmit}>
-
-                                <div className="mb-3">
-
-                                    <label className="form-label">Name</label>
-
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Enter name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        required
-                                    />
-
-                                </div>
-
-                                <div className="mb-3">
-
-                                    <label className="form-label">Email</label>
-
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        placeholder="Enter email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-
-                                </div>
-
-                                <button className="btn btn-success w-100">
-
-                                    {editId ? "Update User" : "Add User"}
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div> */}
-
-
-
                 <div className="col-12">
 
                     <div className="card shadow">
@@ -150,7 +86,7 @@ function AdminApi() {
 
                         <div className="card-body">
 
-                            <table className="table table-bordered table-hover">
+                            <table className="table table-bordered">
 
                                 <thead className="table-dark">
 
@@ -174,9 +110,7 @@ function AdminApi() {
                                             <td>{user.id}</td>
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
-
                                             <td>{user.email}</td>
-
                                             <td>
 
                                                 <button

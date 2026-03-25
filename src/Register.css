@@ -8,6 +8,7 @@ background:rgba(0,0,0,0.5);
 display:flex;
 justify-content:center;
 align-items:center;
+z-index:1000;
 }
 
 .popup-inner{
@@ -15,6 +16,10 @@ background:white;
 padding:30px;
 border-radius:10px;
 width:400px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+position:relative;
+max-height:90vh;
+overflow-y:auto;
 }
 
 .popup-inner input{
